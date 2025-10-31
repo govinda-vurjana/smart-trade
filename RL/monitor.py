@@ -1,0 +1,70 @@
+import csv
+import time
+from datetime import datetime
+import pandas as pd
+
+
+
+
+# Function to be called when 20 minutes of data is ready for prediction
+def data_ready_for_prediction():
+    print("20 minutes of data is ready for prediction.")
+    
+    
+
+# Function to calculate the duration of data in minutes
+def calculate_data_duration(csv_filename):
+    try:
+        with open(csv_filename, 'r') as file:
+            reader = csv.reader(file)
+            # Skip the header row
+            next(reader)
+
+            # Get the timestamp of the first and last entry in the file
+            rows = list(reader)
+            if rows:
+                first_row = rows[0]
+                last_row = rows[-1]
+                
+                first_timestamp = datetime.fromisoformat(first_row[0])
+                last_timestamp = datetime.fromisoformat(last_row[0])
+
+                # Calculate the difference in time between the first and last timestamp
+                time_diff = last_timestamp - first_timestamp
+
+                # Convert time difference to minutes
+                data_duration_minutes = time_diff.total_seconds() / 60
+                return data_duration_minutes
+            else:
+                return 0
+    except FileNotFoundError:
+        print(f"Error: {csv_filename} not found.")
+        return 0
+    except Exception as e:
+        print(f"Error: {e}")
+        return 0
+
+
+# Continuously monitor the live_data.csv file
+csv_filename = 'live_data.csv'
+mindata="1mindata.csv"
+
+print("Monitoring live_data.csv...")
+
+# Establish socket connection to send statuses
+
+while True:
+    # Get the duration of data available in minutes
+    data_duration = calculate_data_duration(csv_filename)
+    
+    # Print the duration of the available data
+    print(f"Live data consists of {int(data_duration)} minutes of data.")
+    
+    # Send live data status to the server
+    # send_status_to_server(client_socket, f"⏳ Live data consists of {int(data_duration)} minutes of data.")
+
+    # Check if 20 minutes of data is available
+    if data_duration >= 20:
+        data_ready_for_prediction()  # Call the function when 20 minutes of data is available
+
+    time.sleep(60)  # Wait for 60 seconds before checking again
