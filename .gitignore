@@ -1,0 +1,33 @@
+# Ignore Python cache and build files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.bak
+*.tmp
+*.log
+*.pt
+*.pth
+*.ipynb_checkpoints/
+logs/
+*.sqlite3
+*.db
+*.egg-info/
+.env
+.DS_Store
+.idea/
+.vscode/
+# Ignore large data files
+Preprocessed/EURUSD/EURUSD.csv
+Preprocessed/EURUSD/cleaned_EURUSD.csv
+SPPO40/cleaned_file.csv
+# Ignore model files
+*.h5
+*.ckpt
+*.onnx
+*.pkl
+*.joblib
+# Ignore system files
+Thumbs.db
